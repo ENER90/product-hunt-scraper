@@ -1,0 +1,5 @@
+{ "actorSpecification": 1, "fields": {}, "views": {
+  "launches": { "title": "Launches", "transformation": { "fields": ["launchedAt", "dailyRank", "name", "tagline", "upvotes", "commentsCount", "topics", "productUrl", "foundVia"] },
+    "display": { "component": "table", "properties": { "launchedAt": { "format": "date" }, "upvotes": { "format": "number" }, "topics": { "format": "array" }, "productUrl": { "format": "link" } } } },
+  "products": { "title": "Products", "transformation": { "fields": ["name", "tagline", "websiteUrl", "reviewsRating", "reviewsCount", "followersCount", "launchesCount", "categories", "url"] },
+    "display": { "component": "table", "properties": { "websiteUrl": { "format": "link" }, "url": { "format": "link" }, "categories": { "format": "array" } } } } } }

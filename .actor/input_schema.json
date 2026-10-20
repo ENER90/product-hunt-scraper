@@ -1,0 +1,11 @@
+{ "title": "Product Hunt Launches", "type": "object", "schemaVersion": 1, "properties": {
+  "dates": { "title": "Dates", "type": "array", "editor": "stringList", "description": "Launch days as YYYY-MM-DD. Empty + no other input = yesterday.", "prefill": ["2026-10-15"] },
+  "dateFrom": { "title": "Date from", "type": "string", "editor": "datepicker", "description": "Start of a date range (max 62 days)." },
+  "dateTo": { "title": "Date to", "type": "string", "editor": "datepicker", "description": "End of the date range (inclusive)." },
+  "period": { "title": "Leaderboard period", "type": "string", "editor": "select", "default": "daily", "enum": ["daily", "weekly", "monthly"], "description": "Daily, weekly (ISO week of the date) or monthly leaderboard." },
+  "topics": { "title": "Topics", "type": "array", "editor": "stringList", "description": "Topic slugs or URLs, e.g. artificial-intelligence. Returns the top products of the topic (one product row each)." },
+  "products": { "title": "Products", "type": "array", "editor": "stringList", "description": "Product slugs or URLs (producthunt.com/products/<slug>) for one detail row each." },
+  "includeProductDetails": { "title": "Add product details to each launch", "type": "boolean", "default": false, "description": "Website, rating, followers, categories, socials, YC flag. One extra page per product." },
+  "minUpvotes": { "title": "Min upvotes", "type": "integer", "default": 0, "minimum": 0, "description": "Skip launches below this score." },
+  "maxLaunches": { "title": "Max launches", "type": "integer", "default": 500, "minimum": 1, "description": "Stop after this many launches." },
+  "proxyConfiguration": { "title": "Proxy", "type": "object", "editor": "proxy", "default": { "useApifyProxy": true, "apifyProxyGroups": ["RESIDENTIAL"], "apifyProxyCountry": "US" }, "description": "Residential proxy recommended (Cloudflare)." } } }

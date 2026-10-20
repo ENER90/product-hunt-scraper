@@ -1,0 +1,3 @@
+{ "actorOutputSchemaVersion": 1, "title": "Product Hunt output", "description": "Launch rows and product rows in the default dataset.",
+  "properties": { "launches": { "type": "string", "title": "Launches", "template": "{{links.apiDefaultDatasetUrl}}/items?view=launches" },
+    "products": { "type": "string", "title": "Products", "template": "{{links.apiDefaultDatasetUrl}}/items?view=products" } } }
