@@ -54,6 +54,28 @@ Extrae **lanzamientos de Product Hunt** por día, semana o mes, y los **producto
 
 **Integraciones:** API de Apify, n8n, Make, Zapier y MCP. Exporta a JSON, CSV o Excel.
 
+## ❓ FAQ
+
+**Do I need a Product Hunt API token?**
+No. The scraper reads the public leaderboards, so you don't need a Product Hunt API token.
+
+**Can I get today's launches every day?**
+Yes. Schedule the Actor daily (Schedules tab) and connect it to Slack, Google Sheets, Make or Zapier.
+
+**Is personal data collected?**
+No maker emails or personal data are collected.
+
+## 🔗 More scrapers by ener90 / Más scrapers de ener90
+
+- [Mercado Libre Reviews & Questions Scraper](https://apify.com/ener90/mercadolibre-reviews-questions) – opiniones y preguntas de Mercado Libre
+- [Mercado Libre Price Tracker](https://apify.com/ener90/mercadolibre-seller-price-monitor) – monitor de precios de tiendas oficiales de Mercado Libre
+- [TrustRadius Reviews Scraper](https://apify.com/ener90/software-reviews-scraper) – reseñas de software B2B de TrustRadius
+- [Walmart Reviews Scraper](https://apify.com/ener90/walmart-products-reviews) – reseñas y productos de Walmart
+- Chile Real Estate Scraper (Portal Inmobiliario + TocToc) (`ener90/chile-real-estate-scraper`, coming soon / próximamente) – propiedades en venta y arriendo en Chile
+- AI Review Insights (`ener90/ai-review-insights`, coming soon / próximamente) – análisis de reseñas con IA
+
+Need a custom scraper or a different site? Open an issue in the **Issues** tab. / ¿Necesitas un scraper a medida? Escríbeme en la pestaña **Issues** (soporte en español).
+
 ## 🧩 API & integrations quick start
 
 **cURL (sync, returns items)**

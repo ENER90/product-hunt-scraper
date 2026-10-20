@@ -1,8 +1,8 @@
 {
   "actorSpecification": 1,
   "name": "product-hunt-launches",
-  "title": "Product Hunt Launches Scraper",
-  "description": "Scrape Product Hunt launches by date (daily/weekly/monthly leaderboards) or topic: name, tagline, upvotes, comments, ranks, topics, plus optional product details (website, rating, followers, categories, socials). No personal data.",
+  "title": "Product Hunt Scraper – Daily Launches & Upvotes",
+  "description": "Scrapes Product Hunt launches by day, week or month and top products by topic: upvotes, comments, ranks and topics, plus website, rating and followers. Unofficial Product Hunt API, no token needed. Schedule daily launch tracking.",
   "version": "0.1",
   "buildTag": "latest",
   "input": "./input_schema.json",
