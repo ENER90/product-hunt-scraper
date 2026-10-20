@@ -1,5 +1,7 @@
 # Product Hunt Launches Scraper
 
+[![CI](https://github.com/ENER90/product-hunt-scraper/actions/workflows/ci.yml/badge.svg)](https://github.com/ENER90/product-hunt-scraper/actions/workflows/ci.yml)
+
 [![Apify Store](https://img.shields.io/badge/Apify%20Store-live-0F62FE?logo=apify&logoColor=white)](https://apify.com/ener90/product-hunt-launches)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
 ![Crawlee](https://img.shields.io/badge/Crawlee-3-FF4785)
