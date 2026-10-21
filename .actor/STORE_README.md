@@ -1,112 +1,101 @@
-# Product Hunt Launches Scraper
+# Product Hunt Scraper – Daily Launches & Upvotes
 
-**Pricing:** US$0.0015 per result row (launch or product) = US$1.50 per 1,000. No start fee, no add-ons. / **Precio:** US$0,0015 por fila = US$1,50 por 1.000, sin cargo de inicio.
+Get every Product Hunt launch for a day, a week or a month in one table, with upvotes, comments, daily/weekly/monthly rank and topics. You can also pull the top products in a topic, or full details for specific products (website, rating, followers, socials). I use it to keep an eye on what's launching in my space without checking the site every morning.
 
-🇬🇧 [English](#english) · 🇪🇸 [Español](#español)
+![Input form with a launch date](https://raw.githubusercontent.com/ENER90/product-hunt-scraper/main/docs/screenshots/01-input.png)
 
-## English
+## What you get
 
-Scrape **Product Hunt launches** by day, week or month from the leaderboards, plus **top products by topic**. No Product Hunt API token is needed.
+**Launch rows** (`type: "launch"`):
 
-- **Each launch:** name, tagline, upvotes, launch-day score, comment count, daily/weekly/monthly rank, topics, launch date, thumbnail and links.
-- **Product details (optional):** website, description, PH review rating and count, followers, number of launches, first launch date, categories, Top Product and YC flags, company social links and app store links.
+| Field | Real example |
+|---|---|
+| `name`, `tagline` | Talanoa, "Email that feels like chat" |
+| `upvotes`, `commentsCount` | `331`, `23` |
+| `dailyRank`, `weeklyRank`, `monthlyRank` | `1`, `5`, `17` |
+| `topics` | ["Email", "Productivity", "Task Management"] |
+| `launchedAt`, `launchUrl`, `productUrl`, `thumbnailUrl` | `2026-10-15T00:01:00-07:00`, links |
 
-**No personal data:** makers' and voters' names, usernames, avatars and emails are never collected. You only get product and company-level information.
+**Product rows** (`type: "product"`) come from **Products**, from **Topics**, or when **Add product details to each launch** is on. They add `websiteUrl`, `reviewsRating`, `reviewsCount`, `followersCount`, `launchesCount`, `categories`, `social`, `appStoreUrls` and `wasInYCombinator`.
 
-**Use cases:** finding new startups and lead lists (product websites), competitor and trend tracking, investor deal flow, and newsletters ("top 10 launches of the week").
+![Launches from October 15, 2026](https://raw.githubusercontent.com/ENER90/product-hunt-scraper/main/docs/screenshots/02-output-table.png)
 
-**Input example**
+## How much it costs
+
+$1.50 per 1,000 rows ($0.0015 each). Each launch or product row is one result.
+
+| Example | Rows | Cost |
+|---|---|---|
+| Yesterday's launches | ~20–40 | $0.03–$0.06 |
+| One month of daily launches | ~900 | $1.35 |
+| Same month, with product details | ~1,800 | $2.70 |
+
+Apify's free plan includes $5 a month, which is about 3,300 rows. **Min upvotes** and **Max launches** keep the bill small. A real run for one day took about 5 seconds.
+
+## How to use it
+
+1. Create a free Apify account and open this Actor.
+2. In **Dates** type one or more days as `YYYY-MM-DD`, or set a range with **Date from** and **Date to** (up to 62 days). If you leave everything empty, you get yesterday.
+3. Pick **Leaderboard period**: `daily`, `weekly` (the ISO week of the date) or `monthly`.
+4. Optional: set **Min upvotes** to skip small launches, and turn on **Add product details to each launch** for website, rating and followers.
+5. Click **Start** and download the table from the **Output** tab.
+
+To get the top products in a category, use **Topics** (e.g. `artificial-intelligence`). For specific products, use **Products** (slug or `producthunt.com/products/<slug>` URL).
+
+## Input example
+
 ```json
-{ "dateFrom": "2026-10-12", "dateTo": "2026-10-16", "includeProductDetails": true, "minUpvotes": 50 }
-```
-- `dates`: a list of days.
-- `period`: daily, weekly or monthly.
-- `topics`: e.g. `artificial-intelligence`.
-- `products`: slugs or URLs.
-- With no input at all, you get yesterday's leaderboard.
-
-**Output example**
-```json
-{ "type": "launch", "name": "Talanoa", "tagline": "Email that feels like chat", "upvotes": 333, "commentsCount": 23, "dailyRank": 1,
-  "topics": ["Email", "Productivity"], "launchedAt": "2026-10-15T00:01:00-07:00", "productUrl": "https://www.producthunt.com/products/talanoa-2",
-  "product": { "websiteUrl": "…", "followersCount": 512, "reviewsRating": 5, "categories": ["…"] } }
+{
+  "dates": ["2026-10-15"],
+  "period": "daily",
+  "minUpvotes": 0,
+  "maxLaunches": 500
+}
 ```
 
-**Integrations:** Apify API, n8n, Make and Zapier (schedule it daily and send the results to Sheets or Slack), the [Apify MCP server](https://mcp.apify.com) for AI agents, and export to JSON, CSV or Excel.
+## Output example
 
-**FAQ**
-- *How many launches per day?* The day's top ~17 featured launches, the ones shown on the leaderboard page. Use weekly or monthly for the bigger picture.
-- *Why no makers' names or emails?* Privacy. This actor only returns product and company information.
-- *Is it reliable?* It uses US residential IPs, rotates sessions and retries automatically on Cloudflare challenges. 256 MB of memory is enough.
+![One launch as JSON](https://raw.githubusercontent.com/ENER90/product-hunt-scraper/main/docs/screenshots/03-output-json.png)
 
-## Español
+## Use cases
 
-Extrae **lanzamientos de Product Hunt** por día, semana o mes, y los **productos destacados de un tema**. No necesita token de la API.
+- A daily or weekly digest of new tools in your niche for a newsletter or Slack channel.
+- Market research: which categories get the most upvotes month after month.
+- Lead lists of new startups, with product details on for website and socials.
+- Tracking competitors' launches and how they ranked.
 
-- **Cada lanzamiento:** nombre, tagline, votos, comentarios, ranking, temas y fecha.
-- **Detalle del producto (opcional):** sitio web, nota, seguidores, categorías y redes de la empresa.
+## Integrations
 
-**Sin datos personales:** no guarda nombres, usuarios ni emails de makers o votantes.
+- **Schedule** it every morning and send the results to Slack, email or a webhook from the Integrations tab.
+- **Google Sheets, Make, Zapier, n8n:** official Apify app, "Run Actor" (`ener90/product-hunt-launches`), then "Get dataset items".
+- **API:**
 
-**Casos de uso:** listas de startups y leads, seguimiento de tendencias y competencia, deal flow y newsletters.
-
-**Entrada:** `dates` o `dateFrom`/`dateTo`, `period`, `topics`, `products`, `includeProductDetails`, `minUpvotes` y `maxLaunches`. Sin input, trae el leaderboard de ayer.
-
-**Integraciones:** API de Apify, n8n, Make, Zapier y MCP. Exporta a JSON, CSV o Excel.
-
-## ❓ FAQ
-
-**Do I need a Product Hunt API token?**
-No. The scraper reads the public leaderboards, so you don't need a Product Hunt API token.
-
-**Can I get today's launches every day?**
-Yes. Schedule the Actor daily (Schedules tab) and connect it to Slack, Google Sheets, Make or Zapier.
-
-**Is personal data collected?**
-No maker emails or personal data are collected.
-
-## 🔗 More scrapers by ener90 / Más scrapers de ener90
-
-- [Mercado Libre Reviews & Questions Scraper](https://apify.com/ener90/mercadolibre-reviews-questions) – opiniones y preguntas de Mercado Libre
-- [Mercado Libre Price Tracker](https://apify.com/ener90/mercadolibre-seller-price-monitor) – monitor de precios de tiendas oficiales de Mercado Libre
-- [TrustRadius Reviews Scraper](https://apify.com/ener90/software-reviews-scraper) – reseñas de software B2B de TrustRadius
-- [Walmart Reviews Scraper](https://apify.com/ener90/walmart-products-reviews) – reseñas y productos de Walmart
-- Chile Real Estate Scraper (Portal Inmobiliario + TocToc) (`ener90/chile-real-estate-scraper`, coming soon / próximamente) – propiedades en venta y arriendo en Chile
-- AI Review Insights (`ener90/ai-review-insights`, coming soon / próximamente) – análisis de reseñas con IA
-
-Need a custom scraper or a different site? Open an issue in the **Issues** tab. / ¿Necesitas un scraper a medida? Escríbeme en la pestaña **Issues** (soporte en español).
-
-## 🧩 API & integrations quick start
-
-**cURL (sync, returns items)**
-```bash
-curl -X POST "https://api.apify.com/v2/acts/ener90~product-hunt-launches/run-sync-get-dataset-items?token=YOUR_APIFY_TOKEN" \
-  -H "Content-Type: application/json" -d '{"dates":["2026-10-15"],"includeProductDetails":true}'
-```
-
-**Node.js**
-```js
-import { ApifyClient } from 'apify-client';
-const client = new ApifyClient({ token: process.env.APIFY_TOKEN });
-const run = await client.actor('ener90/product-hunt-launches').call({"dates":["2026-10-15"],"includeProductDetails":true});
-const { items } = await client.dataset(run.defaultDatasetId).listItems();
-```
-
-**Python**
 ```python
 from apify_client import ApifyClient
-client = ApifyClient("YOUR_APIFY_TOKEN")
-run = client.actor("ener90/product-hunt-launches").call(run_input={"dates":["2026-10-15"],"includeProductDetails":true})
-items = client.dataset(run["defaultDatasetId"]).list_items().items
+client = ApifyClient("YOUR_TOKEN")
+run = client.actor("ener90/product-hunt-launches").call(run_input={"dates": ["2026-10-15"], "period": "daily"})
+for l in client.dataset(run["defaultDatasetId"]).iterate_items():
+    print(l.get("dailyRank"), l["name"], l.get("upvotes"))
 ```
 
-- **Google Sheets:** add the *Google Sheets* integration to a saved Task, or use `=IMPORTDATA("https://api.apify.com/v2/datasets/<DATASET_ID>/items?format=csv&clean=1")`.
-- **n8n / Make / Zapier:** use the official Apify node or app: *Run Actor* (`ener90/product-hunt-launches`) → *Get dataset items*.
-- **Webhooks:** on a Task, add an integration *Run succeeded* → your URL (gets `defaultDatasetId`).
-- **AI agents (MCP):** `https://mcp.apify.com?actors=ener90/product-hunt-launches` works in Claude, ChatGPT, Cursor or any MCP client.
-- **Free plan:** works on Apify's free tier; usage is billed per result (see Pricing). Start with small limits to try it out.
+- **AI agents:** add it to [Apify MCP](https://mcp.apify.com) and ask "what were the top AI launches on Product Hunt this week?".
 
-## 📝 Changelog
-- 0.1 (2026-10-20): first public release. Daily/weekly/monthly leaderboards, topics, product details.
+## Limitations
 
-Issues or ideas? Open an issue in the **Issues** tab and we usually reply within 24 h.
+- Product Hunt is behind Cloudflare, so residential proxies are on by default.
+- Date ranges are capped at 62 days per run. Split longer periods into several runs.
+- Followers, rating and website only come on product rows, not on plain launch rows.
+
+## FAQ
+
+**Is this the official Product Hunt API?** No. It reads the public site, so you don't need an API token.
+
+**What does `launchDayScore` mean?** It's the score Product Hunt uses for the daily ranking. It's close to the upvotes, but not always the same.
+
+**Is it legal?** It only reads public launch pages. Check Product Hunt's terms for your use case.
+
+## More from me
+
+- [TrustRadius Reviews Scraper](https://apify.com/ener90/software-reviews-scraper)
+- [Walmart Reviews Scraper](https://apify.com/ener90/walmart-products-reviews)
+- [AI Review Insights](https://apify.com/ener90/ai-review-insights)
