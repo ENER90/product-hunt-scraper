@@ -2,6 +2,10 @@
 
 Get every Product Hunt launch for a day, a week or a month in one table, with upvotes, comments, daily/weekly/monthly rank and topics. You can also pull the top products in a topic, or full details for specific products (website, rating, followers, socials). I use it to keep an eye on what's launching in my space without checking the site every morning.
 
+If you'd rather see it in action first, I recorded a short video tutorial:
+
+https://www.youtube.com/watch?v=MzHximjHO5s
+
 ![Input form with a launch date](https://raw.githubusercontent.com/ENER90/product-hunt-scraper/main/docs/screenshots/01-input.png)
 
 ## What you get
