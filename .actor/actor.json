@@ -1,7 +1,7 @@
 {
   "actorSpecification": 1,
   "name": "product-hunt-launches",
-  "title": "Product Hunt Scraper – Daily Launches & Upvotes",
+  "title": "Product Hunt Scraper \u2013 Daily Launches & Upvotes",
   "description": "Scrapes Product Hunt launches by day, week or month and top products by topic: upvotes, comments, ranks and topics, plus website, rating and followers. Unofficial Product Hunt API, no token needed. Schedule daily launch tracking.",
   "version": "0.1",
   "buildTag": "latest",
@@ -12,5 +12,10 @@
   "output": "./output_schema.json",
   "dockerfile": "./Dockerfile",
   "readme": "./STORE_README.md",
-  "changelog": "../CHANGELOG.md"
+  "changelog": "../CHANGELOG.md",
+  "minMemoryMbytes": 1024,
+  "defaultRunOptions": {
+    "memoryMbytes": 2048,
+    "timeoutSecs": 3600
+  }
 }

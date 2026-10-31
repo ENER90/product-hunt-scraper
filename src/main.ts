@@ -1,5 +1,7 @@
 import { Actor, log } from 'apify';
-import { BasicCrawler } from 'crawlee';
+import { PlaywrightCrawler } from 'crawlee';
+import { firefox } from 'playwright';
+import { launchOptions } from 'camoufox-js';
 import { BASE, isChallenge, parseTopicProducts, parseLaunches, parseProduct, leaderboardUrl, dateRange, topicSlug, productSlug, LaunchRecord } from './parsers.js';
 
 interface Input { dates?: string[]; dateFrom?: string; dateTo?: string; period?: 'daily' | 'weekly' | 'monthly'; topics?: string[]; products?: string[];
@@ -27,12 +29,19 @@ const seen = new Set<string>();
 const seenProducts = new Set<string>();
 let pushed = 0, blocks = 0;
 
-const crawler = new BasicCrawler({
-  maxRequestRetries: 6, maxConcurrency: 4, requestHandlerTimeoutSecs: 60, useSessionPool: true,
-  sessionPoolOptions: { maxPoolSize: 40, sessionOptions: { maxUsageCount: 20, maxErrorScore: 1 } },
-  async requestHandler({ request, session, sendRequest, crawler: c }) {
-    const res: any = await sendRequest({ url: request.url, proxyUrl: await proxy?.newUrl(session?.id), throwHttpErrors: false, timeout: { request: 30000 },
-      headerGeneratorOptions: { browsers: ['chrome'], devices: ['desktop'], locales: ['en-US'] } } as any);
+// Product Hunt now serves a Cloudflare managed challenge ("Just a moment...") to plain HTTP clients,
+// so pages are loaded in a stealth Firefox (Camoufox) that solves it, then parsed from the rendered HTML.
+const crawler = new PlaywrightCrawler({
+  maxRequestRetries: 4, maxConcurrency: 2, requestHandlerTimeoutSecs: 90, navigationTimeoutSecs: 60, useSessionPool: true, persistCookiesPerSession: true,
+  proxyConfiguration: proxy,
+  sessionPoolOptions: { maxPoolSize: 20, sessionOptions: { maxUsageCount: 30, maxErrorScore: 1 } },
+  browserPoolOptions: { useFingerprints: false },
+  launchContext: { launcher: firefox, launchOptions: await launchOptions({ headless: true, block_images: true }) as any },
+  async requestHandler({ request, session, page, response, crawler: c }) {
+    let body = await page.content();
+    for (let i = 0; i < 30 && isChallenge(body); i++) { await page.waitForTimeout(1000); body = await page.content().catch(() => body); }
+    const status = isChallenge(body) ? 403 : (response?.status() === 403 ? 200 : response?.status() ?? 200);
+    const res = { statusCode: status, body };
     if (res.statusCode === 404) { log.error(`Not found: ${request.url}`); return; }
     if (isChallenge(res.body) || res.statusCode >= 400) { blocks++; session?.retire(); throw new Error(`Blocked (HTTP ${res.statusCode}) on ${request.url}; retrying with a new IP`); }
     if (request.label === 'LIST') {
